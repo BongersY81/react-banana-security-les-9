@@ -6,7 +6,7 @@ import {useContext} from "react";
 
 function NavBar() {
     const navigate = useNavigate();
-    const {isAuth} = useContext(AuthContext)
+    const {isAuth, logout} = useContext(AuthContext);
     console.log();
     return (
         <>
@@ -25,7 +25,7 @@ function NavBar() {
                     {isAuth ?
                         <button
                             type="button"
-                            onClick={() => navigate('/')}
+                            onClick={() => logout()}
                             >
                             uitloggen
                         </button>
