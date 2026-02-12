@@ -1,6 +1,7 @@
 import {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import isTokenValid from "../helpers/isTokenValid";
+import {jwtDecode} from 'jwt-decode'
 
 export const AuthContext = createContext({});
 
@@ -19,11 +20,11 @@ function AuthContextProvider({children}) {
 
             if (isTokenValid(decoded)) {
                 toggleAuth({
-                    isAuth: true
+                    isAuth: true,
                     status: 'done',
                     user: {
                         email: decoded.email,
-                        roles: decoded.roles
+                        roles: decoded.roles,
                     }
                 })
             } else {
@@ -54,7 +55,7 @@ function AuthContextProvider({children}) {
         toggleAuth({
             isAuth: true,
             status: 'done',
-            user: userDetails.user
+            user: userDetails.user,
         })
         navigate('/profile')
     }
@@ -65,6 +66,7 @@ function AuthContextProvider({children}) {
         toggleAuth({
             isAuth: false,
             user: null,
+            status: 'done',
         })
         navigate("/")
     }
@@ -77,7 +79,7 @@ function AuthContextProvider({children}) {
 
     return (
         <AuthContext.Provider value={data}>
-            {children}
+            {auth.status === 'done' ? children : <p>Loading...</p>}
         </AuthContext.Provider>
     );
 }
